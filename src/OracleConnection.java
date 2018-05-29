@@ -28,7 +28,7 @@ public class OracleConnection {
         System.out.println("Connection established");
         stmnt = con.createStatement();
         connected = true;
-        con.setAutoCommit(true);
+        con.setAutoCommit(false);
 
     }
 

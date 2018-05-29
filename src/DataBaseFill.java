@@ -125,9 +125,10 @@ public class DataBaseFill extends DataBaseFillModel {
         for (int i = 0 ; i < numberOfValues ; i++)
         {
             query = baseQuery;
-            query += Integer.toString(baseID + i) + " , " + getRandomYearOfProduction() + " , " + getRandomSchoolNo() + ")";
+            query += Integer.toString(baseID + i) + " , " + getRandomYearOfProduction() + " , " + getRandomSchoolNo() + ");";
 
-            this.doQuery(query);
+            if(this.doQuery(query) == -127)
+                numberOfValues++;
             //System.out.println(query);
         }
     }
@@ -203,17 +204,19 @@ public class DataBaseFill extends DataBaseFillModel {
                 case EMPLOYEES_TABLE: {
                     query   += "'" + pesel + "','" + getRandomFirstName() + "','" + getRandomLastName() + "','"
                             + getRandomAdrress() + "','" + getRandomJobType() + "', "
-                            + getRandomSalary() + ", " + getRandomSchoolNo() + " )";
+                            + getRandomSalary() + ", " + getRandomSchoolNo() + " );";
                     break;
                 }
                 case CLIENTS_TABLE: {
                     query   += "'" + pesel + "','" + getRandomFirstName() + "','" + getRandomLastName() + "','"
-                            + getRandomAdrress() + "' )";
+                            + getRandomAdrress() + "' );";
                     break;
                 }
             }
-
-            this.doQuery(query);
+//Jezeli w bazie jest identyczny wpis, petla wykona sie o raz wiecej
+            System.out.println(query);
+            if(this.doQuery(query) == -127)
+                numberOfValues++;
 
             //System.out.println(query);
             //System.out.println(pesel + " "+ year + " " + month +  " " + day);

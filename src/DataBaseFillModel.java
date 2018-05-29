@@ -38,8 +38,11 @@ public class DataBaseFillModel {
         }
         catch (java.sql.SQLIntegrityConstraintViolationException e)
         {
-            if(e.getErrorCode()==1)
+            if(e.getErrorCode()==1) {
                 error = "W bazie jest juz wpis z taka wartoscia pola unikatowego!";
+                System.out.println(error);
+                return -127;
+            }
             else
                 error = "Napotkano blad. Przyczyna: \n" + e.getMessage();
             System.out.println(error);

@@ -11,7 +11,6 @@ public class Main {
 
         System.out.println("Maksymalnie mozna wygenerowac ok 160 000 rekordow");
         System.out.println("OGRANICZENIE SQL, NIE PRZEKRACZAJ 12 000 rekordow !");
-        System.out.println("Upewnij sie ze wszystkie poprzednio dodane rekordy zostaly usuniete");
         System.out.println("Wprowadz liczbe rekordow jaka chcesz dodac");
 
         numberOfValues = scanner.nextInt();

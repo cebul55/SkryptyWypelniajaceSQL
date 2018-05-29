@@ -10,7 +10,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Maksymalnie mozna wygenerowac ok 160 000 rekordow");
-        System.out.println("OGRANICZENIE SQL, NIE PRZEKRACZAJ 12 000 rekordow !");
+        System.out.println("OGRANICZENIE SQL, NIE PRZEKRACZAJ 12 000 rekordow w jednej tabeli!");
         System.out.println("Wprowadz liczbe rekordow jaka chcesz dodac");
 
         numberOfValues = scanner.nextInt();
@@ -19,7 +19,9 @@ public class Main {
         fill.createInsertIntoQuery(numberOfValues, DataBaseFill.CLIENTS_TABLE);
         fill.createInsertIntoQuery(numberOfValues, DataBaseFill.EQUIPMENT_TABLE);
 
+
         System.out.println("dodano "+ numberOfValues + " rekordow");
+
 
         fill.closeConnection();
     }

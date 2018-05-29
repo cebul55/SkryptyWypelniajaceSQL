@@ -35,6 +35,7 @@ public class DataBaseFillModel {
         String error;
         try {
             oracleConnection.DoQuery(query);
+            System.out.print(".");
         }
         catch (java.sql.SQLIntegrityConstraintViolationException e)
         {
@@ -54,5 +55,30 @@ public class DataBaseFillModel {
             return e.getErrorCode();
         }
         return 0;
+    }
+
+    String returnFromQueryString(String query)
+    {
+        String error;
+        String primaryKey = "";
+        try {
+
+            primaryKey = oracleConnection.returnString(query);
+        }
+        catch (java.sql.SQLIntegrityConstraintViolationException e)
+        {
+            if(e.getErrorCode()==1)
+                error = "W bazie jest juz wpis z taka wartoscia pola unikatowego!";
+            else
+                error = "Napotkano blad. Przyczyna: \n" + e.getMessage();
+            System.out.println(error);
+            return "null";
+        }
+        catch (SQLException e) {
+            error = "Napotkano blad. Przyczyna: \n" + e.getMessage();
+            System.out.println(error);
+            return "null";
+        }
+        return primaryKey;
     }
 }

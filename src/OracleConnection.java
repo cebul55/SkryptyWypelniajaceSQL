@@ -46,6 +46,16 @@ public class OracleConnection {
         return stmnt.executeQuery(query);
     }
 
+    String returnString(String query) throws SQLException {
+        String string = "";
+        ResultSet set = stmnt.executeQuery(query);
+        set.next();
+        string = set.getString(1);
+       // System.out.println(string );
+
+        return string;
+    }
+
     Connection getcon()
     {
         return con;

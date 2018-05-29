@@ -216,6 +216,11 @@ public class DataBaseFill extends DataBaseFillModel {
 //Jezeli w bazie jest identyczny wpis, petla wykona sie o raz wiecej
             if(this.doQuery(query) == -127)
                 numberOfValues++;
+            if(numberOfValues >= 165000)
+            {
+                System.out.println("nie mozna wygenerowac wiecej unikatowych peseli. Koniec dzialania programu");
+                return;
+            }
 
             //System.out.println(query);
             //System.out.println(pesel + " "+ year + " " + month +  " " + day);

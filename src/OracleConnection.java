@@ -28,7 +28,7 @@ public class OracleConnection {
         System.out.println("Connection established");
         stmnt = con.createStatement();
         connected = true;
-        con.setAutoCommit(false);
+        con.setAutoCommit(true);
 
     }
 
@@ -45,6 +45,7 @@ public class OracleConnection {
     ResultSet DoQuery(String query) throws SQLException {
         return stmnt.executeQuery(query);
     }
+
     Connection getcon()
     {
         return con;

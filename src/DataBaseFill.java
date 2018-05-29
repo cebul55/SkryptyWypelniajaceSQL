@@ -1,6 +1,10 @@
 import java.math.BigInteger;
 
-public class EmployeesFill {
+public class DataBaseFill extends DataBaseFillModel {
+
+    public static final int EMPLOYEES_TABLE = 0;
+    public static final int CLIENTS_TABLE = 1;
+    public static final int EQUIPMENT_TABLE = 2;
 
     private static EnumStrings.firstName[] firstNamesArray;
     private static EnumStrings.lastName[] lastNamesArray;
@@ -9,7 +13,9 @@ public class EmployeesFill {
 
     private static RandomNumberGenerator numberGenerator;
 
-    EmployeesFill(){
+    DataBaseFill(){
+        super();
+
         firstNamesArray = new EnumStrings.firstName[EnumStrings.firstName.values().length];
         firstNamesArray = EnumStrings.firstName.values();
 
@@ -59,6 +65,11 @@ public class EmployeesFill {
         return Integer.toString(numberGenerator.getRandomNumber());
     }
 
+    private String getRandomYearOfProduction(){
+        numberGenerator.setRandomNumber(19);
+        return Integer.toString(numberGenerator.getRandomNumber() + 2000 );
+    }
+
     public void printRandomValues(){
         String randomString;
         randomString = getRandomFirstName() + " " + getRandomLastName() + " " + getRandomAdrress() + " " + getRandomJobType()
@@ -103,17 +114,56 @@ public class EmployeesFill {
         return pesel;
     }
 
-    public void createStatments(int numberOfValues){
+    private void insertEquipment(int numberOfValues)
+    {
+        String baseQuery = "INSERT INTO EQUIPMENT(EQUIPMENT_ID, PRODUCTIONYEAR, SCHOOL_ID)\n" +
+                " VALUES (";
+        String query;
+
+        int baseID = 200;
+
+        for (int i = 0 ; i < numberOfValues ; i++)
+        {
+            query = baseQuery;
+            query += Integer.toString(baseID + i) + " , " + getRandomYearOfProduction() + " , " + getRandomSchoolNo() + ")";
+
+            this.doQuery(query);
+            //System.out.println(query);
+        }
+    }
+
+    public void createInsertIntoQuery(int numberOfValues, int numberOfTable){
         int lap = 0;
         int day = 1;
         int month = 1;
         int year = 50;
 
+
+        String baseQuery = "";
+        String query;
+        switch (numberOfTable){
+            case EMPLOYEES_TABLE:
+                baseQuery = "INSERT INTO EMPLOYEES (PESEL, FIRSTNAME, SECONDNAME, ADDRESS, JOBTYPE, SALARY, SCHOOL_ID)\n" +
+                        " VALUES (";
+                break;
+            case CLIENTS_TABLE:
+                baseQuery = "INSERT INTO CLIENTS(CLIENT_PESEL, FIRSTNAME, SECONDNAME, ADDRESS)\n" +
+                        "    VALUES (";
+                break;
+            case EQUIPMENT_TABLE:
+                baseQuery = "INSERT INTO EQUIPMENT(EQUIPMENT_ID, PRODUCTIONYEAR, SCHOOL_ID)\n" +
+                        " VALUES (";
+                this.insertEquipment(numberOfValues);
+                return;
+        }
+
         BigInteger basePesel = this.getNewPesel(lap);
         BigInteger pesel = basePesel;
 
+//start of creating different pesels
         for(int i = 0 ; i  < numberOfValues ; i++)
         {
+            query = baseQuery;
             if( day == 28 ){
                 day = 1;
                 month++;
@@ -148,8 +198,27 @@ public class EmployeesFill {
                 pesel = basePesel;
             }
 
-            System.out.println(pesel + " "+ year + " " + month +  " " + day);
-            //todo change printing next pesels to create statement that can be executed by SQL
+//end of creating different pesel
+            switch (numberOfTable) {
+                case EMPLOYEES_TABLE: {
+                    query   += "'" + pesel + "','" + getRandomFirstName() + "','" + getRandomLastName() + "','"
+                            + getRandomAdrress() + "','" + getRandomJobType() + "', "
+                            + getRandomSalary() + ", " + getRandomSchoolNo() + " )";
+                    break;
+                }
+                case CLIENTS_TABLE: {
+                    query   += "'" + pesel + "','" + getRandomFirstName() + "','" + getRandomLastName() + "','"
+                            + getRandomAdrress() + "' )";
+                    break;
+                }
+            }
+
+            this.doQuery(query);
+
+            //System.out.println(query);
+            //System.out.println(pesel + " "+ year + " " + month +  " " + day);
         }
     }
+
+
 }
